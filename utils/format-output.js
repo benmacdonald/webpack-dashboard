@@ -25,8 +25,10 @@ function formatOutput(stats) {
   const hasWarnings = stats.hasWarnings();
 
   const json = stats.toJson();
-  let formattedErrors = json.errors.map(message => `Error in ${_formatMessage(message)}`);
-  const formattedWarnings = json.warnings.map(message => `Warning in ${_formatMessage(message)}`);
+  let formattedErrors = json.errors.map((error) => `Error in ${_formatMessage(error.message)}`);
+  const formattedWarnings = json.warnings.map(
+    (warning) => `Warning in ${_formatMessage(warning.message)}`
+  );
 
   if (hasErrors) {
     output.push("{red-fg}Failed to compile.{/}");
@@ -34,7 +36,7 @@ function formatOutput(stats) {
     if (formattedErrors.some(_isLikelyASyntaxError)) {
       formattedErrors = formattedErrors.filter(_isLikelyASyntaxError);
     }
-    formattedErrors.forEach(message => {
+    formattedErrors.forEach((message) => {
       output.push(message);
       output.push("");
     });
@@ -44,7 +46,7 @@ function formatOutput(stats) {
   if (hasWarnings) {
     output.push("{yellow-fg}Compiled with warnings.{/yellow-fg}");
     output.push("");
-    formattedWarnings.forEach(message => {
+    formattedWarnings.forEach((message) => {
       output.push(message);
       output.push("");
     });
